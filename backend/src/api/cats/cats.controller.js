@@ -10,7 +10,7 @@ exports.getAllBreeds = async (req, res) => {
   const query = Cat.find({});
 
   const { page, limit } = req.query;
-  
+
   const total = await Cat.countDocuments();
 
   // Convert page and limit to integers
@@ -25,11 +25,11 @@ exports.getAllBreeds = async (req, res) => {
   }
 
   const totalPages = Math.ceil(total / limitNumber);
-  
+
   let skip;
   // Validate page value
   if (pageNumber > totalPages) {
-    skip = (totalPages - 1) * limitNumber
+    skip = (totalPages - 1) * limitNumber;
     pageNumber = totalPages;
   } else if (pageNumber <= 0) {
     pageNumber = 1;
@@ -38,7 +38,7 @@ exports.getAllBreeds = async (req, res) => {
 
   skip = (pageNumber - 1) * limitNumber;
 
-  const cats = await query.skip(skip).limit(limitNumber);
+  const cats = await query.populate("images").skip(skip).limit(limitNumber);
 
   res.send({
     total,
@@ -64,6 +64,15 @@ exports.getBreedById = async (req, res) => {
   res.send({ breed: catBreed });
 };
 
+exports.getBreedByName = async (req, res) => {
+  const { breedName } = req.params;
+  
+  const catBreed = await Cat.findOne({ name: breedName }).populate("images");
+  if (!catBreed) {
+    throw new NotFound(`Breed with Name ${breedName} not found`);
+  }
+  res.send({ breed: catBreed });
+};
 
 // function to validate breed ID
 const validateBreedId = (breedId) => {

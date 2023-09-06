@@ -1,21 +1,22 @@
-import React from 'react'
-import { Footer, Header } from './components'
-import { Home } from './pages'
+import React from "react";
+
+import { AllBreed, Home, NotFound, SingleBreed } from "./pages";
+import { Route, Routes } from "react-router-dom";
+import { MainLayout } from "./layout/MainLayout";
 
 const App = () => {
-
   return (
-    <div className='max-w-7xl mx-auto max-sm:px-3 px-5 min-h-screen'>
-      <div className='font-Montserrat'>
-       
-        <Header />
-        <Home />
-        <Footer/>
-       
-      </div>
+    <>
+      <Routes>
+        <Route path="/" element={<MainLayout />}>
+          <Route index element={<Home />} />
+          <Route path="breeds" element={<AllBreed />} />
+          <Route path="breeds/:breedName" element={<SingleBreed />} />
+          <Route path="*" element={<NotFound />} />
+        </Route>
+      </Routes>
+    </>
+  );
+};
 
-    </div>
-  )
-}
-
-export default App
+export default App;

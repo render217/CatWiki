@@ -19,7 +19,8 @@ export default {
         cMountainMist:"#979797",
         cJudgeGrey:"#544439",
         cLavenderPinocchio:"#E0E0E0",
-      }
+      },
+    
     },
   },
   plugins: [],
